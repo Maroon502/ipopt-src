@@ -1,0 +1,41 @@
+[package]
+name = "ipopt-src"
+version = "0.2.2+0.108.7"
+edition = "2021"
+build = "build.rs"
+links = "Ipopt"
+license = "Apache-2.0"
+description = "Redistribution of Coin-OR Ipopt as a crate"
+documentation = "https://docs.rs/ipopt-src/"
+repository = "https://github.com/Maroon502/ipopt-src.git"
+keywords = ["coin-or", "ipopt", "ipopt-src"]
+readme = "README.md"
+authors = [
+    "Maroon502<maroon502@outlook.com>"
+]
+exclude = [
+    "Ipopt/**/*",
+    "!Ipopt/src/**/*",
+    "!**/LICENSE",
+    "!**/AUTHORS",
+]
+
+[features]
+default = []
+
+intel-mkl-static = []
+intel-mkl-system = []
+
+mumps = []
+pardiso = []
+hsl = []
+blas = []
+
+
+
+[dependencies]
+intel-mkl-src = "0.8"
+
+[build-dependencies]
+cc = "1.0"
+coin-build-tools = "0.2"
