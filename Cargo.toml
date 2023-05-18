@@ -1,6 +1,6 @@
 [package]
 name = "ipopt-src"
-version = "0.2.2+0.108.7"
+version = "0.2.2+3.14.11"
 edition = "2021"
 build = "build.rs"
 links = "Ipopt"
@@ -34,7 +34,8 @@ blas = []
 
 
 [dependencies]
-intel-mkl-src = "0.8"
+intel-mkl-src = {version = "0.8", optional = true}
+openblas-src = {version = "0.10", optional = true}
 
 [build-dependencies]
 cc = "1.0"
