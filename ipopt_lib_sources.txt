@@ -14,8 +14,8 @@ LinAlg/IpDenseGenMatrix.cpp
 LinAlg/IpDenseSymMatrix.cpp
 LinAlg/IpDenseVector.cpp
 LinAlg/IpDiagMatrix.cpp
-LinAlg/IppandedMultiVectorMatrix.cpp
-LinAlg/IppansionMatrix.cpp
+LinAlg/IpExpandedMultiVectorMatrix.cpp
+LinAlg/IpExpansionMatrix.cpp
 LinAlg/IpIdentityMatrix.cpp
 LinAlg/IpLapack.cpp
 LinAlg/IpLowRankUpdateSymMatrix.cpp
@@ -39,7 +39,7 @@ Algorithm/IpAugRestoSystemSolver.cpp
 Algorithm/IpBacktrackingLineSearch.cpp
 Algorithm/IpDefaultIterateInitializer.cpp
 Algorithm/IpEquilibrationScaling.cpp
-Algorithm/IpactHessianUpdater.cpp
+Algorithm/IpExactHessianUpdater.cpp
 Algorithm/IpFilter.cpp
 Algorithm/IpFilterLSAcceptor.cpp
 Algorithm/IpGenAugSystemSolver.cpp
