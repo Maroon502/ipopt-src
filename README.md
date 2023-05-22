@@ -76,16 +76,17 @@ you can compile it for the other target by providing the `--target` option to
 
 | Target                               |  supported  |
 |--------------------------------------|:-----------:|
-| `arm-unknown-linux-gnueabi`          |   |
-| `arm-unknown-linux-gnueabihf`        |   |
-| `armv7-linux-androideabi`            |   |
-| `armv7-unknown-linux-gnueabi`        |   |
-| `armv7-unknown-linux-gnueabihf`      |   |
-| `armv7-unknown-linux-musleabi`       |   |
-| `armv7-unknown-linux-musleabihf`     |   |
-| `riscv64gc-unknown-linux-gnu`        |   |
+| `arm-unknown-linux-gnueabi`          | ✓   |
+| `arm-unknown-linux-gnueabihf`        | ✓   |
+| `armv7-linux-androideabi`            | ✓   |
+| `armv7-unknown-linux-gnueabi`        | ✓   |
+| `armv7-unknown-linux-gnueabihf`      | ✓   |
+| `armv7-unknown-linux-musleabi`       | ✓   |
+| `armv7-unknown-linux-musleabihf`     | ✓   |
+| `riscv64gc-unknown-linux-gnu`        | ✓   |
 | `x86_64-pc-windows-gnu`              | ✓   |
 | `x86_64-unknown-linux-gnu`           | ✓   |
+| others                               | not test   |
 
 ## Contribution
 
