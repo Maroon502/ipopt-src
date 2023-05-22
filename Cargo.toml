@@ -23,11 +23,11 @@ exclude = [
 [features]
 default = ["openblas"]
 
-openblas = ["openblas-src"]
+openblas-static = ["openblas-src"]
 mkl-static-lp64-seq = ["intel-mkl", "intel-mkl-src/mkl-static-lp64-seq"]
 mkl-dynamic-lp64-seq = ["intel-mkl", "intel-mkl-src/mkl-dynamic-lp64-seq"]
 intel-mkl = []
-
+openblas = []
 # mumps = []
 # pardiso = []
 # hsl = []

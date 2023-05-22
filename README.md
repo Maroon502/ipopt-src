@@ -24,9 +24,10 @@ This package does not provide bindings.
 The following Cargo features are supported:
 
 * `default` to enable `openblas`;
-* `openblas` to build with OpenBLAS;
 * `mkl-static-lp64-seq` to build with Intel MKL;
 * `mkl-dynamic-lp64-seq` to build with Intel MKL;
+* `openblas-static` to build with OpenBLAS and link as static;
+* `openblas-dynamic` to build with OpenBLAS and link as dynamic;
 
 
 The package build from the source and link statically by default. It also provide the following environment variables to allow users to link to system library customly:
