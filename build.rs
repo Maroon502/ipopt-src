@@ -1,5 +1,6 @@
 use std::env;
 use std::path::{Path, PathBuf};
+use std::io::Write;
 
 use coin_build_tools::{coinbuilder, link, utils};
 
@@ -49,6 +50,8 @@ fn build_lib_and_link() {
             .display()
     );
 
+    let target = env::var("TARGET").unwrap();
+
     let mut includes_dir = vec![
             format!("{}/Common", src_dir),
             format!("{}/Interfaces", src_dir),
@@ -95,7 +98,7 @@ fn build_lib_and_link() {
 
     // give a config.h file to the compiler
     if target.contains("linux") {
-        let path = src_dir.join("config.h");
+        let path = src_dir + "/config.h";
         let mut file = std::fs::File::create(path).unwrap();
         file.flush();
 
