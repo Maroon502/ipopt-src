@@ -24,9 +24,9 @@ fn main() {
     let want_system = utils::want_system(LIB_NAME);
 
     if want_system && link::link_lib_system_if_supported(LIB_NAME) {
-        let mut coinflags = vec!["IPOPT".to_string()];
+        let coinflags = vec!["IPOPT".to_string()];
 
-        let link_type = if utils::want_static(LIB_NAME) {
+        let _link_type = if utils::want_static(LIB_NAME) {
             "static".to_string()
         } else {
             "dylib".to_string()
@@ -54,7 +54,7 @@ fn build_lib_and_link() {
 
     let target = env::var("TARGET").unwrap();
 
-    let mut includes_dir = vec![
+    let includes_dir = vec![
         format!("{}/Common", src_dir),
         format!("{}/Interfaces", src_dir),
         format!("{}/Algorithm", src_dir),
@@ -136,7 +136,8 @@ fn build_lib_and_link() {
     if target.contains("linux") {
         let path = out_dir.clone() + "/config.h";
         let mut file = std::fs::File::create(path).unwrap();
-        file.flush();
+        file.flush()
+            .expext("IO ERROR, Please clean and rebuild it!");
 
         config
             .define("IPOPT_LAPACK_FUNC(name,NAME)", Some("name ## _"))
