@@ -98,7 +98,7 @@ fn build_lib_and_link() {
 
     // give a config.h file to the compiler
     if target.contains("linux") {
-        let path = src_dir + "/config.h";
+        let path = src_dir.clone() + "/config.h";
         let mut file = std::fs::File::create(path).unwrap();
         file.flush();
 
