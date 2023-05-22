@@ -91,6 +91,11 @@ fn build_lib_and_link() {
     });
     config.define("IPOPT_HAS_RAND", None);
     config.define("IPOPT_HAS_STD__RAND", None);
+    config
+        .define("IPOPT_LAPACK_FUNC(name,NAME)", Some("name ## _"))
+        .define("IPOPT_LAPACK_FUNC_(name,NAME)", Some("name ## _"))
+        .define("IPOPT_C_FINITE", Some("std::isfinite"))
+        .define("HAVE_CONFIG_H", None);
     config.includes(includes_dir);
     config.files(lib_sources);
 
