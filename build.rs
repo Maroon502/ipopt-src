@@ -102,7 +102,7 @@ fn build_lib_and_link() {
         let mut file = std::fs::File::create(path).unwrap();
         file.flush();
 
-        builder
+        config
             .define("IPOPT_LAPACK_FUNC(name,NAME)", Some("name ## _"))
             .define("IPOPT_LAPACK_FUNC_(name,NAME)", Some("name ## _"))
             .define("IPOPT_C_FINITE", Some("std::isfinite"))
