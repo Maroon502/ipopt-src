@@ -23,8 +23,10 @@ This package does not provide bindings.
 ## Configuration
 The following Cargo features are supported:
 
-* `default` ;
-* `intel-mkl` to build with Intel MKL;
+* `default` to enable `openblas`;
+* `openblas` to build with OpenBLAS;
+* `mkl-static-lp64-seq` to build with Intel MKL;
+* `mkl-dynamic-lp64-seq` to build with Intel MKL;
 
 
 The package build from the source and link statically by default. It also provide the following environment variables to allow users to link to system library customly:
@@ -74,14 +76,14 @@ you can compile it for the other target by providing the `--target` option to
 
 | Target                               |  supported  |
 |--------------------------------------|:-----------:|
-| `arm-unknown-linux-gnueabi`          | ✓   |
-| `arm-unknown-linux-gnueabihf`        | ✓   |
-| `armv7-linux-androideabi`            | ✓   |
-| `armv7-unknown-linux-gnueabi`        | ✓   |
-| `armv7-unknown-linux-gnueabihf`      | ✓   |
-| `armv7-unknown-linux-musleabi`       | ✓   |
-| `armv7-unknown-linux-musleabihf`     | ✓   |
-| `riscv64gc-unknown-linux-gnu`        | ✓   |
+| `arm-unknown-linux-gnueabi`          |   |
+| `arm-unknown-linux-gnueabihf`        |   |
+| `armv7-linux-androideabi`            |   |
+| `armv7-unknown-linux-gnueabi`        |   |
+| `armv7-unknown-linux-gnueabihf`      |   |
+| `armv7-unknown-linux-musleabi`       |   |
+| `armv7-unknown-linux-musleabihf`     |   |
+| `riscv64gc-unknown-linux-gnu`        |   |
 | `x86_64-pc-windows-gnu`              | ✓   |
 | `x86_64-unknown-linux-gnu`           | ✓   |
 

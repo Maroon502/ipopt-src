@@ -137,7 +137,7 @@ fn build_lib_and_link() {
         let path = out_dir.clone() + "/config.h";
         let mut file = std::fs::File::create(path).unwrap();
         file.flush()
-            .expext("IO ERROR, Please clean and rebuild it!");
+            .expect("IO ERROR, Please clean and rebuild it!");
 
         config
             .define("IPOPT_LAPACK_FUNC(name,NAME)", Some("name ## _"))

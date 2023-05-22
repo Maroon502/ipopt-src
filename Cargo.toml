@@ -1,6 +1,6 @@
 [package]
 name = "ipopt-src"
-version = "0.1.0+3.14.12"
+version = "0.2.0+3.14.12"
 edition = "2021"
 build = "build.rs"
 links = "Ipopt"
@@ -23,18 +23,15 @@ exclude = [
 [features]
 default = ["openblas"]
 
-intel-mkl-static = []
-intel-mkl-system = []
-
-mumps = []
-pardiso = []
-hsl = []
-blas = []
-
 openblas = ["openblas-src"]
 mkl-static-lp64-seq = ["intel-mkl", "intel-mkl-src/mkl-static-lp64-seq"]
 mkl-dynamic-lp64-seq = ["intel-mkl", "intel-mkl-src/mkl-dynamic-lp64-seq"]
 intel-mkl = []
+
+# mumps = []
+# pardiso = []
+# hsl = []
+# blas = []
 
 [dependencies]
 
