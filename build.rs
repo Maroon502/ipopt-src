@@ -98,7 +98,7 @@ fn build_lib_and_link() {
     config.define("IPOPT_HAS_RAND", None)
         .define("IPOPT_HAS_STD__RAND", None);
     config.define("IPOPTLIB_BUILD", None)
-        .define("IPOPT_VERSION", Some(format!("\"{}\"", IPOPT_VERSION).as_str()))
+        .define("IPOPT_VERSION", Some(format!("\"{}\"", IPOPT_VERSION).as_str()));
 
     // give a config.h file to the compiler
     if target.contains("linux") {
