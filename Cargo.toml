@@ -32,6 +32,9 @@ hsl = []
 blas = []
 
 openblas = ["openblas-src"]
+mkl-static-lp64-seq = ["intel-mkl", "intel-mkl-src/mkl-static-lp64-seq"]
+mkl-dynamic-lp64-seq = ["intel-mkl", "intel-mkl-src/mkl-dynamic-lp64-seq"]
+intel-mkl = []
 
 [dependencies]
 

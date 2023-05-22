@@ -1,6 +1,6 @@
 use std::env;
-use std::path::{Path, PathBuf};
 use std::io::Write;
+use std::path::{Path, PathBuf};
 
 use coin_build_tools::{coinbuilder, link, utils};
 
@@ -50,19 +50,20 @@ fn build_lib_and_link() {
             .join("src")
             .display()
     );
+    let out_dir = env::var("OUT_DIR").unwrap();
 
     let target = env::var("TARGET").unwrap();
 
     let mut includes_dir = vec![
-            format!("{}/Common", src_dir),
-            format!("{}/Interfaces", src_dir),
-            format!("{}/Algorithm", src_dir),
-            format!("{}/Algorithm/LinearSolvers", src_dir),
-            format!("{}/LinAlg", src_dir),
-            format!("{}/LinAlg/TMatrices", src_dir),
-            format!("{}/contrib/CGPenalty", src_dir),
-            format!("{}/Apps/AmplSolver", src_dir),
-        ];
+        format!("{}/Common", src_dir),
+        format!("{}/Interfaces", src_dir),
+        format!("{}/Algorithm", src_dir),
+        format!("{}/Algorithm/LinearSolvers", src_dir),
+        format!("{}/LinAlg", src_dir),
+        format!("{}/LinAlg/TMatrices", src_dir),
+        format!("{}/contrib/CGPenalty", src_dir),
+        format!("{}/Apps/AmplSolver", src_dir),
+    ];
 
     let mut lib_sources = include_str!("ipopt_lib_sources.txt")
         .trim()
@@ -73,18 +74,46 @@ fn build_lib_and_link() {
     let mut coinflags = vec!["IPOPT".to_string()];
 
     if cfg!(feature = "intel-mkl") {
-        lib_sources.push(format!("{}/Algorithm/LinearSolvers/IpPardisoMKLSolverInterface.cpp", src_dir));
+        if !target.contains("x86_64") {
+            panic!("Intel MKL is only supported on x86_64");
+        }
+        lib_sources.push(format!(
+            "{}/Algorithm/LinearSolvers/IpPardisoMKLSolverInterface.cpp",
+            src_dir
+        ));
         coinflags.push("PARDISO_MKL".to_string());
+        coinflags.push("LAPACK".to_string());
     }
 
     if cfg!(feature = "openblas") {
-        lib_sources.push(format!("{}/Algorithm/LinearSolvers/IpMc19TSymScalingMethod.cpp", src_dir));
-        lib_sources.push(format!("{}/Algorithm/LinearSolvers/IpMa27TSolverInterface.cpp", src_dir));
-        lib_sources.push(format!("{}/Algorithm/LinearSolvers/IpMa57TSolverInterface.cpp", src_dir));
-        lib_sources.push(format!("{}/Algorithm/LinearSolvers/IpMa77SolverInterface.cpp", src_dir));
-        lib_sources.push(format!("{}/Algorithm/LinearSolvers/IpMa86SolverInterface.cpp", src_dir));
-        lib_sources.push(format!("{}/Algorithm/LinearSolvers/IpMa97SolverInterface.cpp", src_dir));
-        lib_sources.push(format!("{}/Algorithm/LinearSolvers/IpPardisoSolverInterface.cpp", src_dir));
+        lib_sources.push(format!(
+            "{}/Algorithm/LinearSolvers/IpMc19TSymScalingMethod.cpp",
+            src_dir
+        ));
+        lib_sources.push(format!(
+            "{}/Algorithm/LinearSolvers/IpMa27TSolverInterface.cpp",
+            src_dir
+        ));
+        lib_sources.push(format!(
+            "{}/Algorithm/LinearSolvers/IpMa57TSolverInterface.cpp",
+            src_dir
+        ));
+        lib_sources.push(format!(
+            "{}/Algorithm/LinearSolvers/IpMa77SolverInterface.cpp",
+            src_dir
+        ));
+        lib_sources.push(format!(
+            "{}/Algorithm/LinearSolvers/IpMa86SolverInterface.cpp",
+            src_dir
+        ));
+        lib_sources.push(format!(
+            "{}/Algorithm/LinearSolvers/IpMa97SolverInterface.cpp",
+            src_dir
+        ));
+        lib_sources.push(format!(
+            "{}/Algorithm/LinearSolvers/IpPardisoSolverInterface.cpp",
+            src_dir
+        ));
 
         coinflags.push("LAPACK".to_string());
     }
@@ -95,14 +124,17 @@ fn build_lib_and_link() {
     coinflags.iter().for_each(|flag| {
         config.define(&format!("IPOPT_HAS_{}", flag), None);
     });
-    config.define("IPOPT_HAS_RAND", None)
+    config
+        .define("IPOPT_HAS_RAND", None)
         .define("IPOPT_HAS_STD__RAND", None);
-    config.define("IPOPTLIB_BUILD", None)
-        .define("IPOPT_VERSION", Some(format!("\"{}\"", IPOPT_VERSION).as_str()));
+    config.define("IPOPTLIB_BUILD", None).define(
+        "IPOPT_VERSION",
+        Some(format!("\"{}\"", IPOPT_VERSION).as_str()),
+    );
 
     // give a config.h file to the compiler
     if target.contains("linux") {
-        let path = src_dir.clone() + "/config.h";
+        let path = out_dir.clone() + "/config.h";
         let mut file = std::fs::File::create(path).unwrap();
         file.flush();
 
@@ -111,7 +143,7 @@ fn build_lib_and_link() {
             .define("IPOPT_LAPACK_FUNC_(name,NAME)", Some("name ## _"))
             .define("IPOPT_C_FINITE", Some("std::isfinite"))
             .define("HAVE_CONFIG_H", None)
-            .include(&src_dir);
+            .include(&out_dir);
     }
 
     config.includes(includes_dir);
