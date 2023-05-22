@@ -2,6 +2,6 @@
 #![no_std]
 
 #[cfg(feature = "openblas")]
-extern crate openblas-src;
+extern crate openblas_src;
 #[cfg(feature = "intel-mkl")]
-extern crate intel-mkl-src;
+extern crate intel_mkl_src;
