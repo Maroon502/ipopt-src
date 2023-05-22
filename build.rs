@@ -71,11 +71,23 @@ fn build_lib_and_link() {
         coinflags.push("PARDISO_MKL".to_string());
     }
 
+    if cfg!(feature = "openblas") {
+        lib_sources.push(format!("{}/Algorithm/LinearSolvers/IpMc19TSymScalingMethod.cpp", src_dir));
+        lib_sources.push(format!("{}/Algorithm/LinearSolvers/IpMa27TSolverInterface.cpp", src_dir));
+        lib_sources.push(format!("{}/Algorithm/LinearSolvers/IpMa57TSolverInterface.cpp", src_dir));
+        lib_sources.push(format!("{}/Algorithm/LinearSolvers/IpMa77SolverInterface.cpp", src_dir));
+        lib_sources.push(format!("{}/Algorithm/LinearSolvers/IpMa86SolverInterface.cpp", src_dir));
+        lib_sources.push(format!("{}/Algorithm/LinearSolvers/IpMa97SolverInterface.cpp", src_dir));
+        lib_sources.push(format!("{}/Algorithm/LinearSolvers/IpPardisoSolverInterface.cpp", src_dir));
+
+        coinflags.push("LAPACK".to_string());
+    }
+
     coinbuilder::print_metadata(includes_dir.clone(), coinflags.clone());
 
     let mut config = coinbuilder::init_builder();
     coinflags.iter().for_each(|flag| {
-        config.define(&format!("COIN_HAS_{}", flag), None);
+        config.define(&format!("IPOPT_HAS_{}", flag), None);
     });
     config.define("IPOPT_HAS_RAND", None);
     config.define("IPOPT_HAS_STD__RAND", None);

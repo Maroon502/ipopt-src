@@ -21,7 +21,7 @@ exclude = [
 ]
 
 [features]
-default = []
+default = ["openblas"]
 
 intel-mkl-static = []
 intel-mkl-system = []
@@ -31,11 +31,12 @@ pardiso = []
 hsl = []
 blas = []
 
-
+openblas = ["openblas-src"]
 
 [dependencies]
 intel-mkl-src = {version = "0.8", optional = true}
-openblas-src = {version = "0.10", optional = true}
+# openblas-src = {version = "0.10", optional = true}
+openblas-src = { git = "https://github.com/mike-kfed/openblas-src.git", branch = "arm-cross-compile", optional = true }
 
 [build-dependencies]
 cc = "1.0"
