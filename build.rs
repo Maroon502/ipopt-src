@@ -86,35 +86,6 @@ fn build_lib_and_link() {
     }
 
     if cfg!(feature = "openblas") {
-        lib_sources.push(format!(
-            "{}/Algorithm/LinearSolvers/IpMc19TSymScalingMethod.cpp",
-            src_dir
-        ));
-        lib_sources.push(format!(
-            "{}/Algorithm/LinearSolvers/IpMa27TSolverInterface.cpp",
-            src_dir
-        ));
-        lib_sources.push(format!(
-            "{}/Algorithm/LinearSolvers/IpMa57TSolverInterface.cpp",
-            src_dir
-        ));
-        lib_sources.push(format!(
-            "{}/Algorithm/LinearSolvers/IpMa77SolverInterface.cpp",
-            src_dir
-        ));
-        lib_sources.push(format!(
-            "{}/Algorithm/LinearSolvers/IpMa86SolverInterface.cpp",
-            src_dir
-        ));
-        lib_sources.push(format!(
-            "{}/Algorithm/LinearSolvers/IpMa97SolverInterface.cpp",
-            src_dir
-        ));
-        lib_sources.push(format!(
-            "{}/Algorithm/LinearSolvers/IpPardisoSolverInterface.cpp",
-            src_dir
-        ));
-
         coinflags.push("LAPACK".to_string());
     }
 
