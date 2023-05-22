@@ -58,7 +58,7 @@ fn build_lib_and_link() {
             format!("{}/Algorithm", src_dir),
             format!("{}/Algorithm/LinearSolvers", src_dir),
             format!("{}/LinAlg", src_dir),
-            format!("{}/contrib", src_dir),
+            format!("{}/contrib/CGPenalty", src_dir),
             format!("{}/Apps/AmplSolver", src_dir),
         ];
 
