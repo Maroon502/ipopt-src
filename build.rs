@@ -89,13 +89,24 @@ fn build_lib_and_link() {
     coinflags.iter().for_each(|flag| {
         config.define(&format!("IPOPT_HAS_{}", flag), None);
     });
-    config.define("IPOPT_HAS_RAND", None);
-    config.define("IPOPT_HAS_STD__RAND", None);
-    config
-        .define("IPOPT_LAPACK_FUNC(name,NAME)", Some("name ## _"))
-        .define("IPOPT_LAPACK_FUNC_(name,NAME)", Some("name ## _"))
-        .define("IPOPT_C_FINITE", Some("std::isfinite"))
-        .define("HAVE_CONFIG_H", None);
+    config.define("IPOPT_HAS_RAND", None)
+        .define("IPOPT_HAS_STD__RAND", None);
+    config.define("IPOPTLIB_BUILD", None);
+
+    // give a config.h file to the compiler
+    if target.contains("linux") {
+        let path = src_dir.join("config.h");
+        let mut file = std::fs::File::create(path).unwrap();
+        file.flush();
+
+        builder
+            .define("IPOPT_LAPACK_FUNC(name,NAME)", Some("name ## _"))
+            .define("IPOPT_LAPACK_FUNC_(name,NAME)", Some("name ## _"))
+            .define("IPOPT_C_FINITE", Some("std::isfinite"))
+            .define("HAVE_CONFIG_H", None)
+            .include(&src_dir);
+    }
+
     config.includes(includes_dir);
     config.files(lib_sources);
 
