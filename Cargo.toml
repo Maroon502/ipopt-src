@@ -1,6 +1,6 @@
 [package]
 name = "ipopt-src"
-version = "0.2.0+3.14.12"
+version = "0.2.1+3.14.14"
 edition = "2021"
 build = "build.rs"
 links = "Ipopt"
@@ -21,23 +21,25 @@ exclude = [
 ]
 
 [features]
-default = ["openblas"]
+default = ["mumps", "openblas-static"]
 
-openblas-static = ["openblas-src"]
-openblas-dynamic = ["openblas-src"]
-mkl-static-lp64-seq = ["intel-mkl", "intel-mkl-src/mkl-static-lp64-seq"]
-mkl-dynamic-lp64-seq = ["intel-mkl", "intel-mkl-src/mkl-dynamic-lp64-seq"]
-intel-mkl = []
-openblas = []
-# mumps = []
-# pardiso = []
+intel-mkl = ["intel-mkl-src"]
+mumps = ["mumps-src"]
 # hsl = []
-# blas = []
+# spral = []
+# wsmp = []
+
+intel-mkl-system = ["intel-mkl-src?/mkl-dynamic-lp64-seq", "mumps-src?/intel-mkl-system"]
+intel-mkl-static = ["intel-mkl-src?/mkl-static-lp64-seq", "mumps-src?/intel-mkl-static"]
+
+openblas-system = ["mumps-src?/openblas-system"]
+openblas-static = ["mumps-src?/openblas-static"]
+
 
 [dependencies]
-intel-mkl-src = {version = "0.8", optional = true}
-# openblas-src = {version = "0.10", optional = true}
-openblas-src = { git = "https://github.com/mike-kfed/openblas-src.git", branch = "arm-cross-compile", optional = true }
+intel-mkl-src = { version = "0.8", optional = true }
+openblas-src = { version = "0.10", optional = true }
+mumps-src = { version = "0.1", default-features = false, features = ["d_arith"], optional = true }
 
 [build-dependencies]
 cc = { version = "1.0", features = ["parallel"] }

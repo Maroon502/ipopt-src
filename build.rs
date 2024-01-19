@@ -2,10 +2,10 @@ use std::env;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
-use coin_build_tools::{coinbuilder, link, utils};
+use coin_build_tools::{coinbuilder, utils};
 
 const LIB_NAME: &str = "Ipopt";
-const IPOPT_VERSION: &str = "3.14.12";
+const IPOPT_VERSION: &str = "3.14.14";
 
 fn main() {
     println!(
@@ -20,21 +20,6 @@ fn main() {
         "cargo:rerun-if-env-changed=CARGO_{}_SYSTEM",
         LIB_NAME.to_ascii_uppercase()
     );
-
-    let want_system = utils::want_system(LIB_NAME);
-
-    if want_system && link::link_lib_system_if_supported(LIB_NAME) {
-        let coinflags = vec!["IPOPT".to_string()];
-
-        let _link_type = if utils::want_static(LIB_NAME) {
-            "static".to_string()
-        } else {
-            "dylib".to_string()
-        };
-
-        coinbuilder::print_metadata(Vec::new(), coinflags);
-        return;
-    }
 
     if !Path::new(&format!("{}/LICENSE", LIB_NAME)).exists() {
         utils::update_submodules(env::var("CARGO_MANIFEST_DIR").unwrap());
@@ -54,7 +39,7 @@ fn build_lib_and_link() {
 
     let target = env::var("TARGET").unwrap();
 
-    let includes_dir = vec![
+    let mut includes_dir = vec![
         format!("{}/Common", src_dir),
         format!("{}/Interfaces", src_dir),
         format!("{}/Algorithm", src_dir),
@@ -85,8 +70,18 @@ fn build_lib_and_link() {
         coinflags.push("LAPACK".to_string());
     }
 
-    if cfg!(feature = "openblas") {
+    if cfg!(feature = "mumps") {
+        let (include, _) = coinbuilder::get_metadata_from("Mumps");
+        includes_dir.extend(include);
+        lib_sources.push(format!(
+            "{}/Algorithm/LinearSolvers/IpMumpsSolverInterface.cpp",
+            src_dir
+        ));
         coinflags.push("LAPACK".to_string());
+        coinflags.push("MUMPS".to_string());
+        coinflags.push("FEENABLEEXCEPT".to_string());
+        coinflags.push("MPIINIT".to_string());
+
     }
 
     coinbuilder::print_metadata(includes_dir.clone(), coinflags.clone());
