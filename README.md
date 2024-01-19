@@ -12,14 +12,20 @@ By this package, you don't need to worry about installing Ipopt in the system, a
 
 ## Usage
 
-Just add the following to your `Cargo.toml`:
+1. add the following to your `Cargo.toml`:
 
-```toml
-[dependencies]
-ipopt-src = "0.2"
-```
+    ```toml
+    [dependencies]
+    ipopt-src = "0.2"
+    ```
 
-This package does not provide bindings.
+2. add the following to your `lib.rs`:
+
+    ```toml
+    extern crate ipopt_src;
+    ```
+
+This package does not provide bindings. Please use [coinipopt-sys] to use Ipopt, e.g.
 
 ## Configuration
 
@@ -109,6 +115,7 @@ pull request. Note that any contribution submitted for inclusion in the project
 will be licensed according to the terms given in [LICENSE](license-url).
 
 [Ipopt]: https://github.com/coin-or/Ipopt
+[coinipopt-sys]: https://github.com/Maroon502/coinipopt-sys
 
 [vcpkg]: https://github.com/Microsoft/vcpkg
 
