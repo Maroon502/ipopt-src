@@ -4,7 +4,7 @@
 
 ## description
 
-ipopt-src crate is a *-src crate. This links [Ipopt] libraries to executable build by cargo, but does not provide Rust bindings.
+`Ipopt-src` crate is a *-src crate. This links [Ipopt] libraries to executable build by cargo, but does not provide Rust bindings. [Ipopt] is built with [Mumps] ([mumps-src]) and [OpenBLAS] ([openblas-src])(Optional) and [Intel-MKL] ([intel-mkl-src])(Optional).
 
 By this package, you don't need to worry about installing Ipopt in the system, and it's a package for **all platforms**.
 
@@ -16,7 +16,7 @@ By this package, you don't need to worry about installing Ipopt in the system, a
 
     ```toml
     [dependencies]
-    ipopt-src = "0.2"
+    ipopt-src = "\*"
     ```
 
 2. add the following to your `lib.rs`:
@@ -27,7 +27,14 @@ By this package, you don't need to worry about installing Ipopt in the system, a
 
 This package does not provide bindings. Please use [coinipopt-sys] to use Ipopt, e.g.
 
+```toml
+[dependencies]
+coinipopt-sys = { version = "\*" }
+```
+
 ## Configuration
+
+### Features
 
 The following Cargo features are supported:
 
@@ -43,15 +50,49 @@ There's one of the following solvers needed by ipopt(click [Ipopt] to get more i
 
 if `intel-mkl` is selected, you should choose one of the following linking mode:
 
-* `mkl-static-lp64-seq` to build with Intel MKL;
-* `mkl-dynamic-lp64-seq` to build with Intel MKL;
+* `intel-mkl-static` to build with Intel MKL `lp64`, `seq`;
+* `intel-mkl-dynamic` to build with Intel MKL `lp64`, `seq`;
 
 if `mumps` is selected, you should choose one of the following linking mode as mumps' liner solver:
 
-* `mkl-static-lp64-seq` to build with Intel MKL;
-* `mkl-dynamic-lp64-seq` to build with Intel MKL;
+* `intel-mkl-static` to build with Intel MKL `lp64`, `seq`;
+* `intel-mkl-dynamic` to build with Intel MKL `lp64`, `seq`;
 * `openblas-static` to build with OpenBLAS and link as static;
 * `openblas-dynamic` to build with OpenBLAS and link as dynamic;
+
+### Environment
+
+The package build from the source and link statically by default. It also provide the following environment variables to allow users to link to system library customly:
+
+* `CARGO_IPOPT_STATIC` to link to Ipopt statically;
+* `CARGO_IPOPT_SYSTEM` to link to Ipopt system library;
+* `CARGO_MUMPS_STATIC` to link to Mumps statically;
+* `CARGO_MUMPS_SYSTEM` to link to Mumps system library;
+
+Set the environment variable to `1` to enable the feature. For example, to link to system library dynamically, set `CARGO_${LIB_NAME}_SYSTEM` to `1`; to link to system library statically, set both `CARGO_${LIB_NAME}_SYSTEM` and `CARGO_${LIB_NAME}_STATIC` to `1`.
+
+If you enable OpenBLAS([openblas-src]), you can also pass env to `make` by `OPENBLAS_*`. Read more at [here](#cross-compilation)
+
+### Others
+
+If you enable OpenBLAS([openblas-src]), you can link `OpenBLAS` staticaly or dynamicly by disable default feature and select what you like, for example:
+
+```toml
+ipopt-src = { version = "\*", default-features = no, features = ["mumps", "openblas-static"] }
+```
+
+Similarly, you can link Intel MKL ([intel-mkl-src]) with:
+
+```toml
+ipopt-src = { version = "\*", default-features = no, features = ["intel-mkl", "intel-mkl-system"] }
+```
+
+If you want more configuration, you can try this:
+
+```toml
+ipopt-src = { version = "\*", default-features = no, features = ["intel-mkl"] }
+intel-mkl-src = { version = "\*", features = ["mkl-static-lp64-seq"] }
+```
 
 ## Windows and vcpkg
 
@@ -83,13 +124,13 @@ Please see the ["Static and dynamic C runtimes" in The Rust reference](https://d
 
 ## Cross Compilation
 
-Because [openblas-src]'s Issue [#101](https://github.com/blas-lapack-rs/openblas-src/issues/101), we can't cross compile the package with `openblas-static` feature. So, if you want to cross compile the package, you could use [mike-kfed](https://github.com/mike-kfed/openblas-src/tree/arm-cross-compile) instead.
+If you use OpenBLAS([openblas-src]), you need to set `OPENBLAS_CC`, `OPENBLAS_FC`, `OPENBLAS_HOSTCC`, and `OPENBLAS_TARGET` to pass env to [OpenBLAS], ref:[openblas-src] and [OpenBLAS]. For example:
 
-Add this to your `project/.cargo/config.toml`.
-
-```toml
-[patch.crates-io]
-openblas-src = { git = "https://github.com/mike-kfed/openblas-src.git", branch = "arm-cross-compile" }
+```sh
+export OPENBLAS_TARGET=ARMV8
+export OPENBLAS_HOSTCC=gcc
+export OPENBLAS_CC=aarch64-linux-gnu-gcc
+export OPENBLAS_FC=aarch64-linux-gnu-gfortran
 ```
 
 you can compile it for the other target by providing the `--target` option to `cargo build`.
@@ -98,15 +139,18 @@ you can compile it for the other target by providing the `--target` option to `c
 |--------------------------------------|:-----------:|
 | `arm-unknown-linux-gnueabi`          | ✓   |
 | `arm-unknown-linux-gnueabihf`        | ✓   |
-| `armv7-linux-androideabi`            | ✓   |
 | `armv7-unknown-linux-gnueabi`        | ✓   |
 | `armv7-unknown-linux-gnueabihf`      | ✓   |
 | `armv7-unknown-linux-musleabi`       | ✓   |
 | `armv7-unknown-linux-musleabihf`     | ✓   |
+| `aarch64-unknown-linux-gnu`          | ✓   |
+| `aarch64-unknown-linux-musl`         | ✓   |
 | `riscv64gc-unknown-linux-gnu`        | ✓   |
-| `x86_64-pc-windows-msvc`              | ✓   |
+| `x86_64-pc-windows-msvc`             | ✓   |
 | `x86_64-unknown-linux-gnu`           | ✓   |
 | others                               | not test   |
+
+Note: Features `intel-mkl-*` can only be used for `x86_64-*`. Features `openblas-static` can only be used for `linux`.
 
 ## Contribution
 
@@ -115,6 +159,13 @@ pull request. Note that any contribution submitted for inclusion in the project
 will be licensed according to the terms given in [LICENSE](license-url).
 
 [Ipopt]: https://github.com/coin-or/Ipopt
+[mumps]: https://mumps-solver.org/
+[OpenBLAS]: https://github.com/OpenMathLib/OpenBLAS
+[intel-mkl]: https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl.html
+
+[mumps-src]: https://github.com/Maroon502/mumps-src
+[openblas-src]: https://github.com/blas-lapack-rs/openblas-src
+[intel-mkl-src]: https://github.com/rust-math/intel-mkl-src
 [coinipopt-sys]: https://github.com/Maroon502/coinipopt-sys
 
 [vcpkg]: https://github.com/Microsoft/vcpkg

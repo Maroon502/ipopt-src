@@ -2,7 +2,7 @@ use std::env;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
-use coin_build_tools::{coinbuilder, utils};
+use coin_build_tools::{coinbuilder, link, utils};
 
 const LIB_NAME: &str = "Ipopt";
 const IPOPT_VERSION: &str = "3.14.14";
@@ -20,6 +20,26 @@ fn main() {
         "cargo:rerun-if-env-changed=CARGO_{}_SYSTEM",
         LIB_NAME.to_ascii_uppercase()
     );
+
+    let want_system = utils::want_system(LIB_NAME);
+
+    if want_system && link::link_lib_system_if_supported(LIB_NAME) {
+        let mut coinflags = vec!["IPOPT".to_string()];
+
+        if cfg!(feature = "mumps") {
+            coinflags.push("MUMPS".to_string());
+            coinflags.push("LAPACK".to_string());
+            coinflags.push("FEENABLEEXCEPT".to_string());
+            coinflags.push("MPIINIT".to_string());
+        }
+        if cfg!(feature = "intel-mkl") {
+            coinflags.push("PARDISO_MKL".to_string());
+            coinflags.push("LAPACK".to_string());
+        }
+
+        coinbuilder::print_metadata(Vec::new(), coinflags);
+        return;
+    }
 
     if !Path::new(&format!("{}/LICENSE", LIB_NAME)).exists() {
         utils::update_submodules(env::var("CARGO_MANIFEST_DIR").unwrap());
