@@ -5,7 +5,7 @@ use std::path::{Path, PathBuf};
 use coin_build_tools::{coinbuilder, link, utils};
 
 const LIB_NAME: &str = "Ipopt";
-const IPOPT_VERSION: &str = "3.14.14";
+const IPOPT_VERSION: &str = "3.14.15";
 
 fn main() {
     println!(
