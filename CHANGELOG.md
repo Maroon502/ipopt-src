@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.4+3.14.16](https://github.com/Maroon502/ipopt-src/compare/v0.2.3+3.14.16...v0.2.4+3.14.16) - 2024-08-20
+
+### Other
+- Bump cc from 1.0 to 1.1
+
 ## [0.2.3+3.14.16](https://github.com/Maroon502/ipopt-src/compare/v0.2.2+3.14.15...v0.2.3+3.14.16) - 2024-04-23
 
 ### Changed
