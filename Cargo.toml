@@ -1,6 +1,6 @@
 [package]
 name = "ipopt-src"
-version = "0.2.3+3.14.16"
+version = "0.2.4+3.14.16"
 edition = "2021"
 build = "build.rs"
 links = "Ipopt"
