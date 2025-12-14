@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.4+3.14.16](https://github.com/Maroon502/ipopt-src/compare/v0.2.3+3.14.16...v0.2.4+3.14.16) - 2025-12-14
+
+### Other
+
+- Bump actions/checkout from 5 to 6 ([#8](https://github.com/Maroon502/ipopt-src/pull/8))
+- *(deps)* update actions/cache action to v5 ([#9](https://github.com/Maroon502/ipopt-src/pull/9))
+- *(deps)* update actions/checkout action to v5 ([#6](https://github.com/Maroon502/ipopt-src/pull/6))
+- Update .gitmodules
+- Create renovate.json
+- Bump cc from 1.0 to 1.1
+
 ## [0.2.3+3.14.16](https://github.com/Maroon502/ipopt-src/compare/v0.2.2+3.14.15...v0.2.3+3.14.16) - 2024-04-23
 
 ### Changed
